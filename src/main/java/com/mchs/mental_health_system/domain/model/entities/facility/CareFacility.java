@@ -1,53 +1,51 @@
-package com.mchs.mental_health_system.domain.model.entities.hospitalization;
+package com.mchs.mental_health_system.domain.model.entities.facility;
 
 import com.mchs.mental_health_system.domain.model.entities.patient.Patient;
+import com.mchs.mental_health_system.domain.model.entities.user.AdministrativeProfessional;
 import com.mchs.mental_health_system.domain.model.entities.user.HealthProfessional;
-import com.mchs.mental_health_system.domain.model.enums.hospitalization.AlertStatus;
-import com.mchs.mental_health_system.domain.model.enums.hospitalization.AlertType;
+import com.mchs.mental_health_system.domain.model.shared.embeddable.Address;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "alerts")
+@Table(name = "care_facilities")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Alert {
+public class CareFacility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", nullable = false)
+    @Column(nullable = false, unique = true)
+    private String name;
+
+    @Embedded
+    @Valid
+    private Address address;
+
+    private String primaryPhone;
+    private String primaryEmail;
+
+    @OneToMany(mappedBy = "careFacility", orphanRemoval = true)
     @ToString.Exclude
-    private Patient patient;
+    private List<Patient> patients = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AlertType type;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AlertStatus status = AlertStatus.OPEN;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String message;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    private LocalDateTime resolvedAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_to_id")
+    @OneToMany(mappedBy = "careFacility", orphanRemoval = true)
     @ToString.Exclude
-    private HealthProfessional assignedTo;
+    private List<HealthProfessional> healthProfessionals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "careFacility", orphanRemoval = true)
+    @ToString.Exclude
+    private List<AdministrativeProfessional> administrativeProfessionals = new ArrayList<>();
 
     @Override
     public final boolean equals(Object o) {
@@ -56,8 +54,8 @@ public class Alert {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Alert alert = (Alert) o;
-        return getId() != null && Objects.equals(getId(), alert.getId());
+        CareFacility careFacility = (CareFacility) o;
+        return getId() != null && Objects.equals(getId(), careFacility.getId());
     }
 
     @Override

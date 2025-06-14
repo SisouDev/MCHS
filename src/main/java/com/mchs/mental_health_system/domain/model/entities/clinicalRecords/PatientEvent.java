@@ -1,23 +1,22 @@
-package com.mchs.mental_health_system.domain.model.entities.hospitalization;
+package com.mchs.mental_health_system.domain.model.entities.clinicalRecords;
 
 import com.mchs.mental_health_system.domain.model.entities.patient.Patient;
-import com.mchs.mental_health_system.domain.model.entities.user.HealthProfessional;
-import com.mchs.mental_health_system.domain.model.enums.hospitalization.AlertStatus;
-import com.mchs.mental_health_system.domain.model.enums.hospitalization.AlertType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "alerts")
+@Table(name = "patient_events")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
-public class Alert {
+public abstract class PatientEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,26 +27,11 @@ public class Alert {
     @ToString.Exclude
     private Patient patient;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AlertType type;
+    private LocalDateTime eventDateTime;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AlertStatus status = AlertStatus.OPEN;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String message;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    private LocalDateTime resolvedAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_to_id")
-    @ToString.Exclude
-    private HealthProfessional assignedTo;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     @Override
     public final boolean equals(Object o) {
@@ -56,8 +40,8 @@ public class Alert {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Alert alert = (Alert) o;
-        return getId() != null && Objects.equals(getId(), alert.getId());
+        PatientEvent that = (PatientEvent) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
