@@ -1,6 +1,7 @@
 package com.mchs.mental_health_system.domain.model.shared.embeddable;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
+import jakarta.persistence.Transient;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -38,5 +39,11 @@ public class PersonalData {
     @Email
     private String email;
 
-    public String fullName = firstName + " " + lastName;
+    @Transient
+    public String getFullName() {
+        if (firstName == null && lastName == null) {
+            return "";
+        }
+        return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
+    }
 }

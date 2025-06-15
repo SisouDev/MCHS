@@ -12,8 +12,8 @@ public interface LegalReviewMapper {
     @Mapping(source = "admission.id", target = "admissionId")
     LegalReviewResponseDTO toResponseDTO(LegalReview legalReview);
 
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "admission", ignore = true)
+    @Mapping(source = "notes", target = "reviewerNotes")
     LegalReview toEntity(LegalReviewRequestDTO dto);
 }

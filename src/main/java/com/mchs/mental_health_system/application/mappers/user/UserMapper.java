@@ -15,13 +15,16 @@ public interface UserMapper {
     @Mapping(target = "lastAccess", ignore = true)
     @Mapping(target = "careFacility", ignore = true)
     @Mapping(target = "conductedSessions", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     HealthProfessional toHealthProfessional(UserCreationRequestDTO dto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "passwordHash", ignore = true)
     @Mapping(target = "lastAccess", ignore = true)
     @Mapping(target = "careFacility", ignore = true)
+    @Mapping(target = "authorities", ignore = true) //
     AdministrativeProfessional toAdministrativeProfessional(UserCreationRequestDTO dto);
+
 
     @Mapping(source = "personalData.firstName", target = "firstName")
     @Mapping(source = "personalData.lastName", target = "lastName")

@@ -34,8 +34,11 @@ public interface ClinicalRecordsMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "patient", ignore = true)
+    @Mapping(source = "isPrimary", target = "primary")
     Diagnosis toEntity(DiagnosisRequestDTO dto);
+
     @Mapping(source = "patient.id", target = "patientId")
+    @Mapping(source = "primary", target = "isPrimary")
     DiagnosisResponseDTO toResponseDTO(Diagnosis entity);
     List<DiagnosisResponseDTO> toDiagnosisResponseDTOList(List<Diagnosis> diagnoses);
 

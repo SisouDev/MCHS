@@ -38,6 +38,11 @@ public class Patient {
 
     @Embedded
     @Valid
+    @AttributeOverrides({
+            @AttributeOverride(name = "fullName", column = @Column(name = "emergency_contact_full_name")),
+            @AttributeOverride(name = "relationship", column = @Column(name = "emergency_contact_relationship")),
+            @AttributeOverride(name = "phone", column = @Column(name = "emergency_contact_phone"))
+    })
     private EmergencyContact emergencyContact;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)

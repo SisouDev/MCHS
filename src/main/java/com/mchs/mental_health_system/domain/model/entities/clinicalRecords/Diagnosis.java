@@ -33,7 +33,8 @@ public class Diagnosis {
     @Column(nullable = false)
     private LocalDate diagnosisDate;
 
-    private boolean isPrimary;
+    @Column(name = "is_primary_diagnosis")
+    private boolean primary;
 
     @Override
     public final boolean equals(Object o) {

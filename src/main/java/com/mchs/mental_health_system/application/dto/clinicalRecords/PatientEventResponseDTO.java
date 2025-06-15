@@ -5,11 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "eventType"
-)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "eventType", visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = CrisisEventResponseDTO.class, name = "CRISIS"),
         @JsonSubTypes.Type(value = MedicalHistoryEventResponseDTO.class, name = "HISTORY")
