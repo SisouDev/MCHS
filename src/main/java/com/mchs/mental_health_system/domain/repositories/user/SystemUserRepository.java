@@ -11,4 +11,6 @@ public interface SystemUserRepository extends JpaRepository<SystemUser, Long> {
     Optional<SystemUser> findByUsername(String username);
 
     boolean existsByUsername(String username);
+
+    Optional<Object> findByEmail(String email);
 }

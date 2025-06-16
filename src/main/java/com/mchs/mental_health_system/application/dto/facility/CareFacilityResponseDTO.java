@@ -8,7 +8,6 @@ public record CareFacilityResponseDTO(
         Address address,
         String primaryPhone,
         String primaryEmail,
-
         int patientCount,
         int healthProfessionalCount,
         int administrativeProfessionalCount

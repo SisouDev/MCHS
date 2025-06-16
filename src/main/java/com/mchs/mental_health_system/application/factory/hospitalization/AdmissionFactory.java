@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AdmissionFactory {
-
     private final AdmissionMapper admissionMapper;
-
     public Admission create(AdmissionRequestDTO dto) {
         return admissionMapper.toEntity(dto);
     }

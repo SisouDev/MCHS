@@ -17,6 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "system_users")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "dtype")
 @Getter
 @Setter
 @ToString
@@ -28,6 +29,9 @@ public abstract class SystemUser implements UserDetails {
 
     @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
+    private String email;
 
     @Column(nullable = false)
     private String passwordHash;

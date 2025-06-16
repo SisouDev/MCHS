@@ -13,7 +13,6 @@ public record AdmissionResponseDTO(
         LocalDateTime dischargeDate,
         String reason,
         String ward,
-
         List<LegalReviewResponseDTO> legalReviews
 ) {
 }

@@ -12,6 +12,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "administrative_professionals")
+@DiscriminatorValue("ADMIN_PROFESSIONAL")
 @Getter
 @Setter
 @ToString

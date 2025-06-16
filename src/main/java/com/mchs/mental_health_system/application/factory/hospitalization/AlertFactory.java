@@ -12,7 +12,6 @@ public class AlertFactory {
         alert.setPatient(patient);
         alert.setType(type);
         alert.setMessage(message);
-
         return alert;
     }
 }

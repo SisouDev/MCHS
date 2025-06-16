@@ -11,10 +11,8 @@ public record AlertResponseDTO(
         AlertStatus status,
         String message,
         LocalDateTime createdAt,
-
         Long patientId,
         String patientFullName,
-
         Long assignedToProfessionalId,
         String assignedToProfessionalName
 ) {

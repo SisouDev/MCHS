@@ -19,7 +19,6 @@ public interface ClinicalRecordsMapper {
     @Mapping(source = "consultationSession.id", target = "consultationSessionId")
     PrescriptionResponseDTO toResponseDTO(Prescription entity);
 
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "patient", ignore = true)
     @Mapping(target = "supervisor", ignore = true)
@@ -30,7 +29,6 @@ public interface ClinicalRecordsMapper {
     @Mapping(source = "supervisor.id", target = "supervisorId")
     @Mapping(source = "supervisor.personalData.fullName", target = "supervisorName")
     TreatmentPlanResponseDTO toResponseDTO(TreatmentPlan entity);
-
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "patient", ignore = true)

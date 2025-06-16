@@ -11,7 +11,6 @@ import java.util.Optional;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
     Optional<Patient> findByPersonalDataDocumentNumber(String documentNumber);
 
-    Optional<Patient> findByPersonalDataEmail(String email);
 
     List<Patient> findByPersonalDataFirstNameContainingIgnoreCaseAndPersonalDataLastNameContainingIgnoreCase(String firstName, String lastName);
 

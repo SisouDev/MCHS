@@ -7,11 +7,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface AlertMapper {
-
     @Mapping(source = "patient.id", target = "patientId")
     @Mapping(source = "patient.personalData.fullName", target = "patientFullName")
     @Mapping(source = "assignedTo.id", target = "assignedToProfessionalId")
     @Mapping(source = "assignedTo.personalData.fullName", target = "assignedToProfessionalName")
     AlertResponseDTO toResponseDTO(Alert alert);
-
 }

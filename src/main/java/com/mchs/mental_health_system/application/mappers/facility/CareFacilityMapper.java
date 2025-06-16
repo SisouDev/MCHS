@@ -13,7 +13,6 @@ public interface CareFacilityMapper {
     @Mapping(target = "healthProfessionals", ignore = true)
     @Mapping(target = "administrativeProfessionals", ignore = true)
     CareFacility toEntity(CareFacilityCreationDTO dto);
-
     @Mapping(target = "patientCount", expression = "java(facility.getPatients().size())")
     @Mapping(target = "healthProfessionalCount", expression = "java(facility.getHealthProfessionals().size())")
     @Mapping(target = "administrativeProfessionalCount", expression = "java(facility.getAdministrativeProfessionals().size())")

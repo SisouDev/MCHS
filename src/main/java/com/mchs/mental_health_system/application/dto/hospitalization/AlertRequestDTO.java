@@ -7,10 +7,8 @@ import jakarta.validation.constraints.NotNull;
 public record AlertRequestDTO(
         @NotNull(message = "Alert type is mandatory.")
         AlertType type,
-
         @NotBlank(message = "The alert message cannot be blank.")
         String message,
-
         Long assignedToId
 ) {
 }

@@ -14,12 +14,15 @@ public interface UserMapper {
     @Mapping(target = "passwordHash", ignore = true)
     @Mapping(target = "lastAccess", ignore = true)
     @Mapping(target = "careFacility", ignore = true)
+    @Mapping(source = "careFacilityId", target = "careFacility.id")
+    @Mapping(target = "availabilities", ignore = true)
     @Mapping(target = "conductedSessions", ignore = true)
     @Mapping(target = "authorities", ignore = true)
     HealthProfessional toHealthProfessional(UserCreationRequestDTO dto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "passwordHash", ignore = true)
+    @Mapping(source = "careFacilityId", target = "careFacility.id")
     @Mapping(target = "lastAccess", ignore = true)
     @Mapping(target = "careFacility", ignore = true)
     @Mapping(target = "authorities", ignore = true) //

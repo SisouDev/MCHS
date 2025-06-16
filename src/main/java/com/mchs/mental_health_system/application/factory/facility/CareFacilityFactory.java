@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CareFacilityFactory {
-
     private final CareFacilityMapper careFacilityMapper;
-
     public CareFacility create(CareFacilityCreationDTO dto) {
         return careFacilityMapper.toEntity(dto);
     }

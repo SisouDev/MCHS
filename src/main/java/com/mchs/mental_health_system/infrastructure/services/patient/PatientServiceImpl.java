@@ -13,6 +13,7 @@ import com.mchs.mental_health_system.domain.model.entities.clinicalRecords.Crisi
 import com.mchs.mental_health_system.domain.model.entities.clinicalRecords.MedicalHistoryEvent;
 import com.mchs.mental_health_system.domain.model.entities.patient.Patient;
 import com.mchs.mental_health_system.domain.model.entities.user.HealthProfessional;
+import com.mchs.mental_health_system.domain.model.shared.functions.Auditable;
 import com.mchs.mental_health_system.domain.repositories.clinicalRecords.CrisisEventRepository;
 import com.mchs.mental_health_system.domain.repositories.clinicalRecords.MedicalHistoryEventRepository;
 import com.mchs.mental_health_system.domain.repositories.facility.CareFacilityRepository;
@@ -46,6 +47,7 @@ public class PatientServiceImpl implements PatientService {
     private final PatientEventMapper patientEventMapper;
 
     @Override
+    @Auditable(action = "VIEW_PATIENT_DETAILS")
     public PatientResponseDTO findById(Long id) {
         Patient patient = findPatientByIdOrThrow(id);
         return patientMapper.toResponseDTO(patient);

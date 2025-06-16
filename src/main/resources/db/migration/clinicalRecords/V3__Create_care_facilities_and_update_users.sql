@@ -7,7 +7,7 @@ CREATE TABLE care_facilities (
                                  address_city VARCHAR(255),
                                  address_state VARCHAR(255),
                                  address_postal_code VARCHAR(255),
-                                 address_country country
+                                 address_country VARCHAR(255) NOT NULL
 );
 
 ALTER TABLE health_professionals

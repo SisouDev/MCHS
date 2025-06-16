@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 public record AlertUpdateDTO(
         @NotNull
         AlertStatus status,
-
         Long assignedToProfessionalId
 ) {
 }

@@ -2,6 +2,7 @@ package com.mchs.mental_health_system.infrastructure.services.hospitalization;
 
 import com.mchs.mental_health_system.application.dto.hospitalization.AlertRequestDTO;
 import com.mchs.mental_health_system.application.dto.hospitalization.AlertResponseDTO;
+import com.mchs.mental_health_system.application.factory.hospitalization.AlertFactory;
 import com.mchs.mental_health_system.application.mappers.hospitalization.AlertMapper;
 import com.mchs.mental_health_system.application.services.hospitalization.AlertService;
 import com.mchs.mental_health_system.domain.model.entities.hospitalization.Alert;
@@ -31,18 +32,20 @@ public class AlertServiceImpl implements AlertService {
     private final HealthProfessionalRepository healthProfessionalRepository;
     private final AlertMapper alertMapper;
 
+    private final AlertFactory alertFactory;
+
     @Override
     @Transactional
     public AlertResponseDTO createAlert(Long patientId, AlertRequestDTO requestDTO) {
         Patient patient = findPatientByIdOrThrow(patientId);
-        Alert newAlert = new Alert();
-        newAlert.setPatient(patient);
-        newAlert.setType(requestDTO.type());
-        newAlert.setMessage(requestDTO.message());
+
+        Alert newAlert = alertFactory.create(patient, requestDTO.type(), requestDTO.message());
+
         if (requestDTO.assignedToId() != null) {
             HealthProfessional professional = findProfessionalByIdOrThrow(requestDTO.assignedToId());
             newAlert.setAssignedTo(professional);
         }
+
         Alert savedAlert = alertRepository.save(newAlert);
         return alertMapper.toResponseDTO(savedAlert);
     }

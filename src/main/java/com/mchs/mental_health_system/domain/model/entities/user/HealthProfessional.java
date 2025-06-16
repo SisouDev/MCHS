@@ -16,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "health_professionals")
+@DiscriminatorValue("HEALTH_PROFESSIONAL")
 @Getter
 @Setter
 @ToString
@@ -41,5 +42,9 @@ public class HealthProfessional extends SystemUser {
     @JoinColumn(name = "care_facility_id")
     @ToString.Exclude
     private CareFacility careFacility;
+
+    @OneToMany(mappedBy = "healthProfessional", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Availability> availabilities = new ArrayList<>();
 
 }

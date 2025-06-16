@@ -6,14 +6,10 @@ import com.mchs.mental_health_system.domain.model.entities.hospitalization.Admis
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-
 @Mapper(componentModel = "spring", uses = {LegalReviewMapper.class})
 public interface AdmissionMapper {
-
     @Mapping(source = "patient.id", target = "patientId")
     AdmissionResponseDTO toResponseDTO(Admission admission);
-
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dischargeDate", ignore = true)
     @Mapping(target = "legalReviews", ignore = true)

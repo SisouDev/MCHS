@@ -12,9 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class MedicalHistoryEvent extends PatientEvent {
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ClinicalEventType eventType;
-
 }

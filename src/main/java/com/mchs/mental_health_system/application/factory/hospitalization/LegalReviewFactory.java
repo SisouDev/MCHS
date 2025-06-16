@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class LegalReviewFactory {
-
     private final LegalReviewMapper legalReviewMapper;
-
     public LegalReview create(LegalReviewRequestDTO dto) {
         return legalReviewMapper.toEntity(dto);
     }

@@ -14,4 +14,9 @@ public interface ConsultationSessionRepository extends JpaRepository<Consultatio
     List<ConsultationSession> findByHealthProfessionalId(Long healthProfessionalId);
 
     List<ConsultationSession> findBySessionDateTimeBetween(LocalDateTime start, LocalDateTime end);
+
+
+    List<ConsultationSession> findByHealthProfessionalIdAndSessionDateTimeBetween(
+            Long professionalId, LocalDateTime start, LocalDateTime end
+    );
 }
