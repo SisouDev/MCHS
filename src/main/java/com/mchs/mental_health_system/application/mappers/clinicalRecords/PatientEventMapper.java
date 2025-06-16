@@ -6,8 +6,6 @@ import com.mchs.mental_health_system.domain.model.entities.clinicalRecords.Medic
 import com.mchs.mental_health_system.domain.model.entities.clinicalRecords.PatientEvent;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.SubclassMapping;
 
 import java.util.List;
 
