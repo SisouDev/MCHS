@@ -13,6 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "patient_events")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "dtype")
 @Getter
 @Setter
 @ToString

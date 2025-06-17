@@ -9,6 +9,7 @@ import com.mchs.mental_health_system.application.services.hospitalization.Admiss
 import com.mchs.mental_health_system.domain.model.entities.hospitalization.Admission;
 import com.mchs.mental_health_system.domain.model.entities.hospitalization.LegalReview;
 import com.mchs.mental_health_system.domain.model.entities.patient.Patient;
+import com.mchs.mental_health_system.domain.model.shared.functions.Auditable;
 import com.mchs.mental_health_system.domain.repositories.hospitalization.AdmissionRepository;
 import com.mchs.mental_health_system.domain.repositories.hospitalization.LegalReviewRepository;
 import com.mchs.mental_health_system.domain.repositories.patient.PatientRepository;
@@ -35,6 +36,7 @@ public class AdmissionServiceImpl implements AdmissionService {
 
     @Override
     @Transactional
+    @Auditable(action = "PATIENT_ADMITTED")
     public AdmissionResponseDTO admitPatient(Long patientId, AdmissionRequestDTO requestDTO) {
         Patient patient = findPatientByIdOrThrow(patientId);
         admissionRepository.findActiveByPatientId(patientId).ifPresent(admission -> {
@@ -48,6 +50,7 @@ public class AdmissionServiceImpl implements AdmissionService {
 
     @Override
     @Transactional
+    @Auditable(action = "PATIENT_DISCHARGED")
     public AdmissionResponseDTO dischargePatient(Long admissionId, LocalDateTime dischargeDate) {
         Admission admission = findAdmissionByIdOrThrow(admissionId);
 
@@ -77,6 +80,7 @@ public class AdmissionServiceImpl implements AdmissionService {
 
     @Override
     @Transactional
+    @Auditable(action = "LEGAL_REVIEW_ADDED")
     public AdmissionResponseDTO addLegalReviewToAdmission(Long admissionId, LegalReviewRequestDTO reviewDTO) {
         Admission admission = findAdmissionByIdOrThrow(admissionId);
 

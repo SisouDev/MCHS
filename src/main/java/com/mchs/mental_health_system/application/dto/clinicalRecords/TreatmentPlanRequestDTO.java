@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record TreatmentPlanRequestDTO(
-        @NotNull Long patientId,
         Long supervisorId,
         @NotNull TreatmentPlanStatus status,
         @NotBlank String objectives,

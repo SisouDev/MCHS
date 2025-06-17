@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record MedicalHistoryEventRequestDTO(
-        @NotNull Long patientId,
         @NotNull LocalDateTime eventDateTime,
         @NotBlank String description,
         @NotNull ClinicalEventType eventType,

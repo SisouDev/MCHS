@@ -4,6 +4,7 @@ import com.mchs.mental_health_system.application.dto.auth.AuthRequestDTO;
 import com.mchs.mental_health_system.application.dto.auth.AuthResponseDTO;
 import com.mchs.mental_health_system.application.services.config.AuthenticationService;
 import com.mchs.mental_health_system.domain.model.entities.user.SystemUser;
+import com.mchs.mental_health_system.domain.model.shared.functions.Auditable;
 import com.mchs.mental_health_system.domain.repositories.user.SystemUserRepository;
 import com.mchs.mental_health_system.exceptions.user.UserNotFoundException;
 import com.mchs.mental_health_system.security.JwtTokenProvider;
@@ -27,6 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Auditable(action = "USER_LOGIN_SUCCESS")
     public AuthResponseDTO login(AuthRequestDTO requestDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestDTO.username(), requestDTO.password())
@@ -40,6 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
+    @Auditable(action = "USER_CREATED")
     public void changePassword(String username, String oldPassword, String newPassword) {
         SystemUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));

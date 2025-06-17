@@ -7,8 +7,6 @@ import com.mchs.mental_health_system.application.dto.hospitalization.AdmissionRe
 import com.mchs.mental_health_system.application.dto.hospitalization.AlertRequestDTO;
 import com.mchs.mental_health_system.application.dto.patient.PatientCreationDTO;
 import com.mchs.mental_health_system.application.dto.patient.PatientResponseDTO;
-import com.mchs.mental_health_system.application.dto.user.AdministrativeProfessionalResponseDTO;
-import com.mchs.mental_health_system.application.dto.user.HealthProfessionalResponseDTO;
 import com.mchs.mental_health_system.application.dto.user.UserCreationRequestDTO;
 import com.mchs.mental_health_system.application.services.clinicalRecords.ConsultationSessionService;
 import com.mchs.mental_health_system.application.services.clinicalRecords.DiagnosisService;
@@ -115,6 +113,16 @@ public class DataSeeder implements CommandLineRunner {
         Long facilityId1 = facilities.get(0).getId();
         Long facilityId2 = facilities.get(1).getId();
 
+        UserCreationRequestDTO managerRequest = new UserCreationRequestDTO(
+                "gerente.admin", "gerente.admin@mhc.com", "senha123",
+                AccessProfile.ROLE_MANAGER,
+                new PersonalData("Jorge", "Ribeiro", LocalDate.of(1975, 4, 14),
+                        new Document(DocumentType.NATIONAL_ID, "789.789.789-78", Country.BRAZIL),
+                        "11-9444-5555"),
+                null, null, null, null
+        );
+        savedUsers.add(userService.createUser(managerRequest));
+
         UserCreationRequestDTO drAnaRequest = new UserCreationRequestDTO(
                 "ana.souza", "ana.souza@mhc.com", "senha123",
                 AccessProfile.ROLE_CLINICAL,
@@ -123,8 +131,7 @@ public class DataSeeder implements CommandLineRunner {
                         "11-9999-0001"),
                 MedicalSpecialty.PSYCHIATRIST, "CRM-SP/123456", null, facilityId1
         );
-        HealthProfessionalResponseDTO drAnaResponse = userService.createHealthProfessional(drAnaRequest);
-        systemUserRepository.findById(drAnaResponse.id()).ifPresent(savedUsers::add);
+        savedUsers.add(userService.createUser(drAnaRequest));
 
         UserCreationRequestDTO drCarlosRequest = new UserCreationRequestDTO(
                 "carlos.mendes", "carlos.mendes@mhc.com", "senha123",
@@ -134,8 +141,7 @@ public class DataSeeder implements CommandLineRunner {
                         "21-9888-0002"),
                 MedicalSpecialty.PSYCHOLOGIST, "CRP-RJ/789012", null, facilityId2
         );
-        HealthProfessionalResponseDTO drCarlosResponse = userService.createHealthProfessional(drCarlosRequest);
-        systemUserRepository.findById(drCarlosResponse.id()).ifPresent(savedUsers::add);
+        savedUsers.add(userService.createUser(drCarlosRequest));
 
         UserCreationRequestDTO joaoRequest = new UserCreationRequestDTO(
                 "joao.silva", "joao.silva@mhc.com", "senha123",
@@ -145,8 +151,7 @@ public class DataSeeder implements CommandLineRunner {
                         "11-9888-0003"),
                 null, null, AdministrativeRole.RECEPTIONIST, facilityId1
         );
-        AdministrativeProfessionalResponseDTO joaoResponse = userService.createAdministrativeProfessional(joaoRequest);
-        systemUserRepository.findById(joaoResponse.id()).ifPresent(savedUsers::add);
+        savedUsers.add(userService.createUser(joaoRequest));
 
         UserCreationRequestDTO mariaRequest = new UserCreationRequestDTO(
                 "maria.lima", "maria.lima@mhc.com", "senha123",
@@ -156,8 +161,7 @@ public class DataSeeder implements CommandLineRunner {
                         "21-9777-0004"),
                 MedicalSpecialty.NURSE, "COREN-RJ/345678", null, facilityId2
         );
-        HealthProfessionalResponseDTO mariaResponse = userService.createHealthProfessional(mariaRequest);
-        systemUserRepository.findById(mariaResponse.id()).ifPresent(savedUsers::add);
+        savedUsers.add(userService.createUser(mariaRequest));
 
         UserCreationRequestDTO ricardoRequest = new UserCreationRequestDTO(
                 "ricardo.alves", "ricardo.alves@mhc.com", "senha123",
@@ -167,8 +171,7 @@ public class DataSeeder implements CommandLineRunner {
                         "11-9666-0005"),
                 null, null, AdministrativeRole.CLINIC_MANAGER, facilityId1
         );
-        AdministrativeProfessionalResponseDTO ricardoResponse = userService.createAdministrativeProfessional(ricardoRequest);
-        systemUserRepository.findById(ricardoResponse.id()).ifPresent(savedUsers::add);
+        savedUsers.add(userService.createUser(ricardoRequest));
 
         UserCreationRequestDTO fernandaRequest = new UserCreationRequestDTO(
                 "fernanda.costa", "fernanda.costa@mhc.com", "senha123",
@@ -178,10 +181,9 @@ public class DataSeeder implements CommandLineRunner {
                         "11-9555-0006"),
                 MedicalSpecialty.SOCIAL_WORKER, "CRESS-SP/98765", null, facilityId1
         );
-        HealthProfessionalResponseDTO fernandaResponse = userService.createHealthProfessional(fernandaRequest);
-        systemUserRepository.findById(fernandaResponse.id()).ifPresent(savedUsers::add);
+        savedUsers.add(userService.createUser(fernandaRequest));
 
-        log.info("Users seeded.");
+        log.info("Users seeded: {} users created.", savedUsers.size());
         return savedUsers;
     }
 
@@ -287,12 +289,12 @@ public class DataSeeder implements CommandLineRunner {
 
 
         AdmissionRequestDTO brunoAdmissionRequest = new AdmissionRequestDTO(
-                bruno.getId(),
                 AdmissionType.VOLUNTARY,
                 LocalDateTime.now().minusDays(10),
                 "Episódio depressivo agudo com sintomas psicóticos.",
                 "Ala A - Quarto 101"
         );
+
         admissionService.admitPatient(bruno.getId(), brunoAdmissionRequest);
         log.info("Admission created for patient: " + bruno.getPersonalData().getFullName());
 
@@ -306,7 +308,6 @@ public class DataSeeder implements CommandLineRunner {
 
 
         AdmissionRequestDTO carlaAdmissionRequest = new AdmissionRequestDTO(
-                carla.getId(),
                 AdmissionType.INVOLUNTARY,
                 LocalDateTime.now().minusDays(20),
                 "Crise de ansiedade severa com agorafobia, recusando-se a sair de casa.",
@@ -348,22 +349,20 @@ public class DataSeeder implements CommandLineRunner {
         HealthProfessional fernanda = (HealthProfessional) users.stream().filter(u -> u.getUsername().equals("fernanda.costa")).findFirst().orElseThrow();
 
         TreatmentPlanRequestDTO brunoPlanRequest = new TreatmentPlanRequestDTO(
-                bruno.getId(),
                 drAna.getId(),
                 TreatmentPlanStatus.ACTIVE,
                 "Reduzir sintomas depressivos e melhorar o funcionamento social.",
-                LocalDate.now().minusDays(10),
+                LocalDate.now().minusDays(20),
                 LocalDate.now().plusMonths(6)
         );
         treatmentPlanService.createTreatmentPlan(bruno.getId(), brunoPlanRequest);
         log.info("Treatment Plan created for patient: " + bruno.getPersonalData().getFullName());
 
         DiagnosisRequestDTO brunoDiagnosisRequest = new DiagnosisRequestDTO(
-                bruno.getId(),
-                "F32.2",
+                "F32.2", // CID-10
                 "Episódio depressivo grave sem sintomas psicóticos",
-                LocalDate.now().minusDays(10),
-                true
+                LocalDate.now().minusDays(20),
+                true // Primário
         );
         diagnosisService.addDiagnosis(bruno.getId(), brunoDiagnosisRequest);
         log.info("Diagnosis created for patient: " + bruno.getPersonalData().getFullName());
@@ -395,10 +394,10 @@ public class DataSeeder implements CommandLineRunner {
         log.info("Follow-up Consultation (2) created for patient: Bruno Gomes");
 
 
-        TreatmentPlanRequestDTO carlaPlanRequest = new TreatmentPlanRequestDTO(carla.getId(), drCarlos.getId(), TreatmentPlanStatus.ACTIVE, "Desenvolver estratégias de enfrentamento para ansiedade e agorafobia.", LocalDate.now().minusDays(15), LocalDate.now().plusMonths(4));
+        TreatmentPlanRequestDTO carlaPlanRequest = new TreatmentPlanRequestDTO(drCarlos.getId(), TreatmentPlanStatus.ACTIVE, "Desenvolver estratégias de enfrentamento para ansiedade e agorafobia.", LocalDate.now().minusDays(15), LocalDate.now().plusMonths(4));
         treatmentPlanService.createTreatmentPlan(carla.getId(), carlaPlanRequest);
 
-        DiagnosisRequestDTO carlaDiagnosisRequest = new DiagnosisRequestDTO(carla.getId(), "F41.1", "Transtorno de ansiedade generalizada", LocalDate.now().minusDays(15), true);
+        DiagnosisRequestDTO carlaDiagnosisRequest = new DiagnosisRequestDTO("F41.1", "Transtorno de ansiedade generalizada", LocalDate.now().minusDays(15), true);
         diagnosisService.addDiagnosis(carla.getId(), carlaDiagnosisRequest);
 
         ConsultationSession carlaSession = new ConsultationSession();
@@ -409,7 +408,7 @@ public class DataSeeder implements CommandLineRunner {
         consultationSessionRepository.save(carlaSession);
         log.info("Records and Consultation created for patient: Carla Fernandes");
 
-        DiagnosisRequestDTO sofiaDiagnosisRequest = new DiagnosisRequestDTO(sofia.getId(), "F43.1", "Transtorno de estresse pós-traumático", LocalDate.now().minusDays(5), true);
+        DiagnosisRequestDTO sofiaDiagnosisRequest = new DiagnosisRequestDTO("F43.1", "Transtorno de estresse pós-traumático", LocalDate.now().minusDays(5), true);
         diagnosisService.addDiagnosis(sofia.getId(), sofiaDiagnosisRequest);
 
         ConsultationSession sofiaSession = new ConsultationSession();

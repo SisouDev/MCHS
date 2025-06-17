@@ -35,7 +35,10 @@ CREATE TABLE health_professionals (
                                       CONSTRAINT fk_health_professional_on_system_user FOREIGN KEY (id) REFERENCES system_users (id)
 );
 
-
+CREATE TABLE managers (
+                          id BIGINT PRIMARY KEY,
+                          CONSTRAINT fk_manager_on_system_user FOREIGN KEY (id) REFERENCES system_users (id)
+);
 
 CREATE TABLE administrative_professionals (
                                               id BIGINT PRIMARY KEY,

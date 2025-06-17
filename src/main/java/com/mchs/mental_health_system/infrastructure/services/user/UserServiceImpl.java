@@ -6,8 +6,6 @@ import com.mchs.mental_health_system.application.dto.user.UserCreationRequestDTO
 import com.mchs.mental_health_system.application.factory.user.UserFactory;
 import com.mchs.mental_health_system.application.mappers.user.UserMapper;
 import com.mchs.mental_health_system.application.services.user.UserService;
-import com.mchs.mental_health_system.domain.model.entities.user.AdministrativeProfessional;
-import com.mchs.mental_health_system.domain.model.entities.user.HealthProfessional;
 import com.mchs.mental_health_system.domain.model.entities.user.SystemUser;
 import com.mchs.mental_health_system.domain.model.enums.userManagement.AccessProfile;
 import com.mchs.mental_health_system.domain.model.enums.userManagement.AdministrativeRole;
@@ -18,6 +16,7 @@ import com.mchs.mental_health_system.domain.repositories.user.SystemUserReposito
 import com.mchs.mental_health_system.exceptions.common.BusinessException;
 import com.mchs.mental_health_system.exceptions.user.UsernameAlreadyExistsException;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,24 +38,12 @@ public class UserServiceImpl implements UserService {
 
     @PostConstruct
     public void init() {
-        for (UserFactory factory : userFactories) {
-            factoryMap.put(factory.getSupportedProfile(), factory);
-        }
+        userFactories.forEach(factory -> factoryMap.put(factory.getSupportedProfile(), factory));
     }
 
     @Override
-    public HealthProfessionalResponseDTO createHealthProfessional(UserCreationRequestDTO creationDTO) {
-        SystemUser user = create(creationDTO);
-        return userMapper.toHealthProfessionalResponseDTO((HealthProfessional) user);
-    }
-
-    @Override
-    public AdministrativeProfessionalResponseDTO createAdministrativeProfessional(UserCreationRequestDTO creationDTO) {
-        SystemUser user = create(creationDTO);
-        return userMapper.toAdministrativeProfessionalResponseDTO((AdministrativeProfessional) user);
-    }
-
-    private SystemUser create(UserCreationRequestDTO dto) {
+    @Transactional
+    public SystemUser createUser(UserCreationRequestDTO dto) {
         if (systemUserRepository.existsByUsername(dto.username())) {
             throw new UsernameAlreadyExistsException(dto.username());
         }

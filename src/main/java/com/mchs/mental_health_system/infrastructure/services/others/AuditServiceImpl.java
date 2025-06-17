@@ -21,12 +21,12 @@ public class AuditServiceImpl implements AuditService {
     @Override
     @Transactional(readOnly = true)
     public List<AuditLogDTO> findLogsByUsername(String username) {
-        throw new UnsupportedOperationException("Not implemented yet. Please add findByUsername to AuditLogRepository.");
+        return auditLogMapper.toDTOList(auditLogRepository.findByUsernameOrderByTimestampDesc(username));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AuditLogDTO> findLogsByPeriod(LocalDateTime start, LocalDateTime end) {
-        throw new UnsupportedOperationException("Not implemented yet. Please add findByTimestampBetween to AuditLogRepository.");
+        return auditLogMapper.toDTOList(auditLogRepository.findByTimestampBetweenOrderByTimestampDesc(start, end));
     }
 }

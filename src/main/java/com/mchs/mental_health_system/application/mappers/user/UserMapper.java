@@ -5,6 +5,7 @@ import com.mchs.mental_health_system.application.dto.user.HealthProfessionalResp
 import com.mchs.mental_health_system.application.dto.user.UserCreationRequestDTO;
 import com.mchs.mental_health_system.domain.model.entities.user.AdministrativeProfessional;
 import com.mchs.mental_health_system.domain.model.entities.user.HealthProfessional;
+import com.mchs.mental_health_system.domain.model.entities.user.Manager;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -38,4 +39,10 @@ public interface UserMapper {
     @Mapping(source = "personalData.lastName", target = "lastName")
     @Mapping(source = "personalData.birthDate", target = "birthDate")
     AdministrativeProfessionalResponseDTO toAdministrativeProfessionalResponseDTO(AdministrativeProfessional professional);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "passwordHash", ignore = true)
+    @Mapping(target = "lastAccess", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
+    Manager toManager(UserCreationRequestDTO dto);
 }

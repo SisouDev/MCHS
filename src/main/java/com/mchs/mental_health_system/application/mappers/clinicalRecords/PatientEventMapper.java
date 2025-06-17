@@ -34,13 +34,9 @@ public interface PatientEventMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "patient", ignore = true)
     @Mapping(target = "reportedBy", ignore = true)
-    @Mapping(target = "description", ignore = true)
-    @Mapping(target = "eventDateTime", ignore = true)
     CrisisEvent toEntity(CrisisEventRequestDTO dto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "patient", ignore = true)
-    @Mapping(target = "description", ignore = true)
-    @Mapping(target = "eventDateTime", ignore = true)
     MedicalHistoryEvent toEntity(MedicalHistoryEventRequestDTO dto);
 }

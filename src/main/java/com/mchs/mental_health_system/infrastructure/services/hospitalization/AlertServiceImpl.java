@@ -9,6 +9,7 @@ import com.mchs.mental_health_system.domain.model.entities.hospitalization.Alert
 import com.mchs.mental_health_system.domain.model.entities.patient.Patient;
 import com.mchs.mental_health_system.domain.model.entities.user.HealthProfessional;
 import com.mchs.mental_health_system.domain.model.enums.hospitalization.AlertStatus;
+import com.mchs.mental_health_system.domain.model.shared.functions.Auditable;
 import com.mchs.mental_health_system.domain.repositories.hospitalization.AlertRepository;
 import com.mchs.mental_health_system.domain.repositories.patient.PatientRepository;
 import com.mchs.mental_health_system.domain.repositories.user.HealthProfessionalRepository;
@@ -36,6 +37,7 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     @Transactional
+    @Auditable(action = "ALERT_CREATED")
     public AlertResponseDTO createAlert(Long patientId, AlertRequestDTO requestDTO) {
         Patient patient = findPatientByIdOrThrow(patientId);
 
@@ -52,6 +54,7 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     @Transactional
+    @Auditable(action = "ALERT_ASSIGNED")
     public AlertResponseDTO assignAlert(Long alertId, Long professionalId) {
         Alert alert = findAlertByIdOrThrow(alertId);
         if (alert.getStatus() != AlertStatus.OPEN) {
@@ -65,6 +68,7 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     @Transactional
+    @Auditable(action = "ALERT_RESOLVED")
     public AlertResponseDTO resolveAlert(Long alertId) {
         Alert alert = findAlertByIdOrThrow(alertId);
         if (alert.getStatus() == AlertStatus.RESOLVED) {

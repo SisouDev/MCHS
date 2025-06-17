@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record CrisisEventRequestDTO(
-        @NotNull Long patientId,
         @NotNull LocalDateTime eventDateTime,
         @NotBlank String description,
         @NotNull SeverityLevel severity,

@@ -55,6 +55,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
+    @Auditable(action = "PATIENT_REGISTERED")
     public PatientResponseDTO registerNewPatient(PatientCreationDTO creationDTO) {
         if (patientRepository.existsByPersonalData_Document_Number(creationDTO.personalData().getDocument().getNumber())) {
             throw new BusinessException("A patient with the provided document number already exists.");
@@ -93,6 +94,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    @Auditable(action = "CRISIS_EVENT_RECORDED")
     public PatientEventResponseDTO recordCrisisEvent(Long patientId, CrisisEventRequestDTO requestDTO) {
         Patient patient = findPatientByIdOrThrow(patientId);
         HealthProfessional reporter = findProfessionalByIdOrThrow(requestDTO.reportedById());

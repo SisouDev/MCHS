@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record LegalReviewRequestDTO(
-        @NotNull Long admissionId,
         @NotNull LocalDate reviewDate,
         @NotNull LegalReviewStatus status,
         String reviewerName,
