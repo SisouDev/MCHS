@@ -25,7 +25,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserMapper userMapper; // <-- Injetar o mapper
+    private final UserMapper userMapper;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMINISTRATIVE', 'MANAGER')")
